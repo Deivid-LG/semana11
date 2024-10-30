@@ -1,8 +1,5 @@
 package com.tecsup.petclinic.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
@@ -13,6 +10,8 @@ import com.tecsup.petclinic.entities.Owner;
 import com.tecsup.petclinic.exception.OwnerNotFoundException;
 
 import lombok.extern.slf4j.Slf4j;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Slf4j
@@ -54,5 +53,60 @@ public class OwnerServiceTest {
 		List<Owner> owners = this.ownerService.findByLastName(LAST_NAME);
 
 		assertEquals(SIZE_EXPECTED, owners.size());
+	}
+
+	//Chocce
+
+	@Test
+	public void testCreateOwner() {
+		String FIRST_NAME = "Alice";
+		String LAST_NAME = "Wonderland";
+		String ADDRESS = "123 Some St";
+		String CITY = "Lima";
+		String TELEPHONE = "987654321";
+
+		Owner owner = new Owner(FIRST_NAME, LAST_NAME, ADDRESS, CITY, TELEPHONE);
+
+		Owner ownerCreated = this.ownerService.create(owner);
+
+		log.info("OWNER CREATED :" + ownerCreated.toString());
+
+		assertNotNull(ownerCreated.getId());
+		assertEquals(FIRST_NAME, ownerCreated.getFirstName());
+		assertEquals(LAST_NAME, ownerCreated.getLastName());
+		assertEquals(ADDRESS, ownerCreated.getAddress());
+		assertEquals(CITY, ownerCreated.getCity());
+		assertEquals(TELEPHONE, ownerCreated.getTelephone());
+	}
+
+	//Chocce
+
+	@Test
+	public void testDeleteOwner() {
+		String FIRST_NAME = "Michael";
+		String LAST_NAME = "Jackson";
+		String ADDRESS = "Neverland";
+		String CITY = "Los Angeles";
+		String TELEPHONE = "123123123";
+
+		// ------------ Create ---------------
+		Owner owner = new Owner(FIRST_NAME, LAST_NAME, ADDRESS, CITY, TELEPHONE);
+		owner = this.ownerService.create(owner);
+		log.info("" + owner);
+
+		// ------------ Delete ---------------
+		try {
+			this.ownerService.delete(owner.getId());
+		} catch (OwnerNotFoundException e) {
+			fail(e.getMessage());
+		}
+
+		// ------------ Validation ---------------
+		try {
+			this.ownerService.findById(owner.getId());
+			assertTrue(false);
+		} catch (OwnerNotFoundException e) {
+			assertTrue(true);
+		}
 	}
 }
