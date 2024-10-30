@@ -1,37 +1,58 @@
 package com.tecsup.petclinic.services;
 
-import lombok.extern.slf4j.Slf4j;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import org.junit.jupiter.api.Test;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.tecsup.petclinic.entities.Owner;
+import com.tecsup.petclinic.exception.OwnerNotFoundException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
 public class OwnerServiceTest {
 
-	//@Autowired
-   //	private OwnerService ownerService;
+	@Autowired
+	private OwnerService ownerService;
 
-	/**
-	 * 
-	 */
-	/*
 	@Test
 	public void testFindOwnerById() {
+		String FIRST_NAME_EXPECTED = "George";
+		Integer ID = 1;
 
-		long ID = 1;
-		String NAME = "Jaime";
 		Owner owner = null;
-		
+
 		try {
-			
-			owner = ownerService.findById(ID);
-			
-		} catch (OwnertNotFoundException e) {
+			owner = this.ownerService.findById(ID);
+		} catch (OwnerNotFoundException e) {
 			fail(e.getMessage());
 		}
-		log.info("" + owner);
-
-		assertEquals(NAME, owner.getName());
-
+		assertEquals(FIRST_NAME_EXPECTED, owner.getFirstName());
 	}
-	*/
+
+	@Test
+	public void testFindOwnerByFirstName() {
+		String FIND_FIRST_NAME = "David";
+		int SIZE_EXPECTED = 1;
+
+		List<Owner> owners = this.ownerService.findByFirstName(FIND_FIRST_NAME);
+
+		assertEquals(SIZE_EXPECTED, owners.size());
+	}
+
+	@Test
+	public void testFindOwnerByLastName() {
+		String LAST_NAME = "Wonderland";
+		int SIZE_EXPECTED = 2;
+
+		List<Owner> owners = this.ownerService.findByLastName(LAST_NAME);
+
+		assertEquals(SIZE_EXPECTED, owners.size());
+	}
 }

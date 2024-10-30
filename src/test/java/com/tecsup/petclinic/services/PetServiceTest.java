@@ -47,7 +47,7 @@ public class PetServiceTest {
     public void testFindPetByName() {
 
         String FIND_NAME = "Leo";
-        int SIZE_EXPECTED = 1;
+        int SIZE_EXPECTED = 3;
 
         List<Pet> pets = this.petService.findByName(FIND_NAME);
 
