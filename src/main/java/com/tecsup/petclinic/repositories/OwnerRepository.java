@@ -7,11 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.tecsup.petclinic.entities.Owner;
 
-/**
- *
- * @author jgomezm
- *
- */
+
 @Repository
 public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 
